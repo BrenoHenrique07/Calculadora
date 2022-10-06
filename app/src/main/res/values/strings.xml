@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name" translatable="false">Calculator</string>
+    <string name="quatro">4</string>
+    <string name="sete">7</string>
+    <string name="cinco">5</string>
+    <string name="tres">3</string>
+    <string name="menos">-</string>
+    <string name="multiplicacao">X</string>
+    <string name="nove">9</string>
+    <string name="adicao">+</string>
+    <string name="nm_double">.</string>
+    <string name="equal">=</string>
+    <string name="um">1</string>
+    <string name="dois">2</string>
+    <string name="zero">0</string>
+    <string name="divisao">/</string>
+    <string name="seis">6</string>
+    <string name="oito">8</string>
+    <string name="apagar_tudo">C</string>
+    <string name="apagar">ap</string>
+</resources>
