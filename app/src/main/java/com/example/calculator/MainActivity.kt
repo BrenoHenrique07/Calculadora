@@ -10,10 +10,10 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var textOutput: TextView
     private var concat: String = " "
-    private var modeResult: Boolean = false
-    private var mode: Int = 0
+    private var operationAux: String = " "
     private var numberop: Double = 0.0
-    private var numberResult: Double = 0.0
+    private var result: Double = 0.0
+    private var modeResult: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,50 +25,77 @@ class MainActivity : AppCompatActivity() {
     fun onClickNumber(view: View) {
         val valButton = view as Button
 
-        concat += valButton.text.toString()
-        this.textOutput.text = concat
+        this.concat += valButton.text.toString()
+        this.textOutput.text = this.concat
     }
 
     fun onClickOperation(view: View) {
         val operation = view as Button
 
-            if(mode != 2) {
-                if (modeResult == false) {
-                    numberop = concat.toDouble()
-                    concat = " "
+        if(this.concat.length > 1) {
+            this.numberop = concat.toDouble()
 
-                    this.textOutput.text = operation.text
-                    modeResult = true
-                } else {
-                    numberResult = numberop
-                    numberop = 0.0
-                    numberop = concat.toDouble()
+            if(!modeResult) {
+                this.result = this.numberop
+                this.operationAux = operation.text.toString()
 
-                    mode = 2
-                    modeResult = false
-                }
+                this.modeResult = true
             } else {
-                calcHistory(numberResult, numberop, operation.text.toString())
-                mode = 0
+                calcHistory(this.numberop, this.operationAux)
+                this.operationAux = operation.text.toString()
             }
+
+            this.concat = " "
+            this.numberop = 0.0
+
+            if(operation.text == "="){
+                result()
+            }
+        } else {
+            this.textOutput.text = this.result.toString()
         }
 
-        fun calcHistory(number1: Double, number2: Double, operation: String) {
-
-            val result: Double = when (operation) {
-                "+" -> add(number1, number2)
-                "-" -> sub(number1, number2)
-                "X" -> mul(number1, number2)
-                "/" -> div(number1, number2)
-
-                else -> 0.0
-            }
-            concat = result.toString()
-            this.textOutput.text = result.toString()
-        }
-
-        fun add(nm1 : Double, nm2 : Double): Double {return nm1 + nm2}
-        fun sub(nm1 : Double, nm2 : Double): Double {return nm1 - nm2}
-        fun mul(nm1 : Double, nm2 : Double): Double {return nm1 * nm2}
-        fun div(nm1 : Double, nm2 : Double): Double {return nm1 / nm2}
     }
+
+    private fun calcHistory(number1: Double, operation: String) {
+
+        when (operation) {
+            "+" -> this.result = add(number1, this.result)
+            "-" -> this.result = sub(number1, this.result)
+            "X" -> this.result = mul(number1, this.result)
+            "/" -> this.result = div(number1, this.result)
+
+            else -> 0.0
+        }
+
+        this.textOutput.text = this.result.toString()
+    }
+
+    fun onClickDeleteAll(view: View) {
+        result()
+        this.textOutput.text = this.result.toString()
+    }
+
+    fun onClickDelete(view: View) {
+
+        if(this.concat.length > 2) {
+            this.concat = this.concat.dropLast(1)
+            this.result = this.concat.toDouble()
+        } else {
+            this.concat = " "
+            this.result = 0.0
+        }
+
+        this.textOutput.text = this.result.toString()
+    }
+
+    private fun add(nm1 : Double, nm2 : Double): Double {return nm1 + nm2}
+    private fun sub(nm1 : Double, nm2 : Double): Double {return nm2 - nm1}
+    private fun mul(nm1 : Double, nm2 : Double): Double {return nm1 * nm2}
+    private fun div(nm1 : Double, nm2 : Double): Double {return nm2 / nm1}
+    private fun result() {  this.concat = " "
+        this.numberop = 0.0
+        this.operationAux = " "
+        this.result = 0.0
+        this.modeResult = false}
+}
